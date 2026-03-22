@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄金闭环 - 朋友圈营销与私聊转化方法论</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Dark Botanical Style
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #0f0f0f;
+            --text-primary: #e8e4df;
+            --text-secondary: #9a9590;
+            --accent-warm: #d4a574;
+            --accent-pink: #e8b4b8;
+            --accent-gold: #c9b896;
+            --accent-terracotta: #c9a689;
+
+            /* Typography */
+            --font-display: 'Cormorant', serif;
+            --font-body: 'IBM Plex Sans', sans-serif;
+            --title-size: clamp(2rem, 6vw, 4.5rem);
+            --h2-size: clamp(1.5rem, 4vw, 2.5rem);
+            --h3-size: clamp(1.125rem, 2.5vw, 1.5rem);
+            --body-size: clamp(0.75rem, 1.5vw, 1rem);
+            --small-size: clamp(0.65rem, 1vw, 0.875rem);
+
+            /* Spacing */
+            --slide-padding: clamp(1rem, 4vw, 4rem);
+            --content-gap: clamp(0.75rem, 2vw, 1.5rem);
+            --element-gap: clamp(0.5rem, 1vw, 1rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive breakpoints */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --content-gap: clamp(0.5rem, 1.5vw, 1rem);
+                --title-size: clamp(1.5rem, 5vw, 3rem);
+                --h2-size: clamp(1.25rem, 3vw, 2rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.4rem, 1vw, 0.75rem);
+                --title-size: clamp(1.25rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            }
+            .nav-dots, .slide-number { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root { --title-size: clamp(1.5rem, 7vw, 2.5rem); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        /* ===========================================
+           BACKGROUND SHAPES
+           =========================================== */
+        .bg-shapes {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-pink);
+            top: -150px;
+            right: -100px;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-warm);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-gold);
+            top: 40%;
+            left: 15%;
+            opacity: 0.25;
+        }
+
+        /* ===========================================
+           NAVIGATION ELEMENTS
+           =========================================== */
+        .slide-number {
+            position: absolute;
+            top: clamp(1rem, 3vw, 2rem);
+            left: clamp(1rem, 3vw, 2rem);
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--accent-warm);
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: clamp(1rem, 2vw, 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-warm);
+            transform: scale(1.3);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-warm), var(--accent-pink));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--accent-warm);
+        }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .accent-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--accent-warm), transparent);
+            margin: 0 auto 1.5rem;
+        }
+
+        .section-label {
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-warm);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===========================================
+           SLIDE SPECIFIC STYLES
+           =========================================== */
+
+        /* --- Title Slide --- */
+        .title-slide .slide-content {
+            text-align: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            margin-bottom: var(--content-gap);
+        }
+
+        .title-slide .subtitle {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: var(--h3-size);
+            color: var(--text-secondary);
+            margin-bottom: var(--content-gap);
+        }
+
+        .title-slide .author {
+            font-size: var(--small-size);
+            color: var(--accent-gold);
+            letter-spacing: 0.1em;
+        }
+
+        /* --- Content Slides --- */
+        .content-slide .slide-content {
+            max-width: min(90vw, 900px);
+            margin: 0 auto;
+        }
+
+        .content-slide h2 {
+            margin-bottom: var(--content-gap);
+            text-align: center;
+        }
+
+        /* --- Two Column Layout --- */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--content-gap);
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        /* --- Cards --- */
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .card h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .card p, .card li {
+            font-size: calc(var(--body-size) * 0.95);
+        }
+
+        /* --- Lists --- */
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .feature-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-warm);
+        }
+
+        /* --- Numbered List --- */
+        .numbered-list {
+            list-style: none;
+            counter-reset: item;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+        }
+
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .numbered-list li::before {
+            content: counter(item, decimal-leading-zero);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-family: var(--font-display);
+            font-size: var(--body-size);
+            color: var(--accent-warm);
+            opacity: 0.7;
+        }
+
+        /* --- Quote --- */
+        .quote-slide .slide-content {
+            text-align: center;
+            max-width: min(85vw, 800px);
+            margin: 0 auto;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: var(--content-gap);
+        }
+
+        .quote-author {
+            font-size: var(--body-size);
+            color: var(--accent-warm);
+        }
+
+        /* --- Grid Layout --- */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--element-gap);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .grid-item {
+            padding: 1rem;
+        }
+
+        .grid-item .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .grid-item h4 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            color: var(--accent-pink);
+            margin-bottom: 0.25rem;
+        }
+
+        .grid-item p {
+            font-size: var(--small-size);
+        }
+
+        /* --- Timeline --- */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--content-gap);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-warm);
+            flex-shrink: 0;
+            margin-top: 0.5em;
+        }
+
+        .timeline-content h4 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        /* --- Highlight Box --- */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(232, 180, 184, 0.1));
+            border-left: 3px solid var(--accent-warm);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: var(--element-gap) 0;
+        }
+
+        .highlight-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* --- Percentage Display --- */
+        .percent-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: var(--content-gap) 0;
+        }
+
+        .percent-item {
+            text-align: center;
+        }
+
+        .percent-value {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--accent-pink);
+            line-height: 1;
+        }
+
+        .percent-label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* --- Closing Slide --- */
+        .closing-slide .slide-content {
+            text-align: center;
+        }
+
+        .action-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+            max-width: 500px;
+            margin: var(--content-gap) auto;
+            text-align: left;
+        }
+
+        .action-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+        }
+
+        .action-list .time {
+            font-family: var(--font-display);
+            font-size: var(--small-size);
+            color: var(--accent-warm);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- ===========================================
+         SLIDE 1: Title
+         =========================================== -->
+    <section class="slide title-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="slide-number">01</div>
+        <div class="slide-content">
+            <div class="accent-line reveal"></div>
+            <h1 class="reveal">黄金闭环</h1>
+            <p class="subtitle reveal">朋友圈营销与私聊转化方法论</p>
+            <p class="author reveal">从种草到成交的完整链路</p>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 2: Overview
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">02</div>
+        <div class="slide-content">
+            <p class="section-label reveal">课程概览</p>
+            <h2 class="reveal">两大核心模块</h2>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="card reveal">
+                    <h3>第一章 · 朋友圈篇</h3>
+                    <ul class="feature-list">
+                        <li>真善美原则</li>
+                        <li>养成系朋友圈</li>
+                        <li>四要素法则（真·爱·趣·梦）</li>
+                        <li>三段式写法</li>
+                        <li>发布时间与技巧</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <h3>第二章 · 私聊篇</h3>
+                    <ul class="feature-list">
+                        <li>上推下切技巧</li>
+                        <li>回马枪策略</li>
+                        <li>转化链路图</li>
+                        <li>每日节奏表</li>
+                        <li>三条红线</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 3: 核心原则
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">03</div>
+        <div class="slide-content">
+            <p class="section-label reveal">第一章</p>
+            <h2 class="reveal">不要忘了真善美</h2>
+            <div class="highlight-box reveal">
+                <p>你的朋友圈就是你的门面，不是发广告，不是在经营你在朋友眼中的形象。让朋友觉得"这个人做一件挺酷的事"，而不是"这人在搞推销"。</p>
+            </div>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="reveal">
+                    <h3>目标：先予后取</h3>
+                    <p>建立心理账户，通过持续输出价值，在朋友圈中积累信任资本。</p>
+                </div>
+                <div class="reveal">
+                    <h3>IP 形象塑造</h3>
+                    <ul class="feature-list">
+                        <li>物质价值 / 干货价值</li>
+                        <li>情绪价值</li>
+                        <li>有趣、有审美</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 4: 四要素 - 概览
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">04</div>
+        <div class="slide-content">
+            <p class="section-label reveal">养成系朋友圈</p>
+            <h2 class="reveal">四要素法则</h2>
+            <p style="text-align: center; margin-bottom: var(--content-gap);" class="reveal">一个真实的人，有层次感。四个方向交替发，才像一个人。</p>
+            <div class="grid-4 reveal">
+                <div class="grid-item">
+                    <div class="icon">真</div>
+                    <h4>真实生活</h4>
+                    <p>烟火气、活人感</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">爱</div>
+                    <h4>爱与感恩</h4>
+                    <p>重感情、愿帮人</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">趣</div>
+                    <h4>有趣</h4>
+                    <p>让人想看的内容</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">梦</div>
+                    <h4>梦想目标</h4>
+                    <p>你的决心与追求</p>
+                </div>
+            </div>
+            <div class="percent-display reveal">
+                <div class="percent-item">
+                    <div class="percent-value">30%</div>
+                    <div class="percent-label">真</div>
+                </div>
+                <div class="percent-item">
+                    <div class="percent-value">20%</div>
+                    <div class="percent-label">爱</div>
+                </div>
+                <div class="percent-item">
+                    <div class="percent-value">20%</div>
+                    <div class="percent-label">趣</div>
+                </div>
+                <div class="percent-item">
+                    <div class="percent-value">30%</div>
+                    <div class="percent-label">梦</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 5: 真 - 真实生活
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">05</div>
+        <div class="slide-content">
+            <p class="section-label reveal">四要素 · 真</p>
+            <h2 class="reveal">真实生活</h2>
+            <p style="text-align: center; margin-bottom: var(--content-gap);" class="reveal">纯生活分享，有烟火气。穿插生活的东西，人味就出来了。</p>
+            <div class="two-col">
+                <div class="card reveal">
+                    <h3>案例 1</h3>
+                    <p>锦城林皆出不落落</p>
+                    <p style="margin-top: 0.5rem; font-size: var(--small-size);">没有广告成分，但别人觉得你是个活人</p>
+                </div>
+                <div class="card reveal">
+                    <h3>案例 2</h3>
+                    <p>好吃到感觉汤里下了罂粟</p>
+                    <p style="margin-top: 0.5rem; font-size: var(--small-size);">纯生活分享，有烟火气。如果全是成绩和干货，本人会觉得你很累</p>
+                </div>
+            </div>
+            <div class="highlight-box reveal">
+                <p><strong>真实感 > 精致感</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 6: 爱 - 爱与感恩
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">06</div>
+        <div class="slide-content">
+            <p class="section-label reveal">四要素 · 爱</p>
+            <h2 class="reveal">爱与感恩</h2>
+            <div class="two-col">
+                <div class="reveal">
+                    <h3>YQLO 的故事</h3>
+                    <p>讲别人的故事，但传递的是"我是一个重感情的人""我愿意帮身边的人"。同时自然展示了圈子和资源。</p>
+                </div>
+                <div class="reveal">
+                    <h3>案例 4</h3>
+                    <p>"他们不是觉得你做不到，而是怕你做得好"</p>
+                    <p style="margin-top: 0.5rem; font-size: var(--small-size);">真实感受和狼狈的一面，但不是卖惨——结尾升华到鼓励他人。这种朋友圈会有很多评论和私聊，因为很多人会产生共鸣。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 7: 趣与梦
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">07</div>
+        <div class="slide-content">
+            <p class="section-label reveal">四要素 · 趣 & 梦</p>
+            <h2 class="reveal">有趣与梦想</h2>
+            <div class="two-col">
+                <div class="card reveal">
+                    <h3>趣 · 有趣</h3>
+                    <ul class="feature-list">
+                        <li>好玩的，让人想看的内容</li>
+                        <li>朋友帮个大忙打出手</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-size: var(--small-size);">有趣的朋友圈让人愿意翻你的朋友圈，而不是看到你就划走</p>
+                </div>
+                <div class="card reveal">
+                    <h3>梦 · 梦想目标</h3>
+                    <ul class="feature-list">
+                        <li>你的目标、你的决心</li>
+                        <li>70天挑战万粉公开立flag</li>
+                        <li>价值×营销公式</li>
+                    </ul>
+                    <p style="margin-top: 1rem; font-size: var(--small-size);"><strong>成功公式 = 目标 × 路径 × 资源</strong></p>
+                </div>
+            </div>
+            <div class="highlight-box reveal">
+                <p>不要只发一种：全是梦会觉得你在画饼，全是趣会感觉你没正事</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 8: 三段式写法
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">08</div>
+        <div class="slide-content">
+            <p class="section-label reveal">写作技巧</p>
+            <h2 class="reveal">三段式写法</h2>
+            <div class="timeline" style="margin-top: var(--content-gap);">
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第一段：钩子（1-2句）</h4>
+                        <p>朋友圈的鱼，三个方向选一个：你学到了什么 / 你的感受/变化 / 你看到的一个具体细节</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第二段：故事（占全文70%以上）</h4>
+                        <p>用你自己的话，说感受不说道理</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第三段：落点（1句）</h4>
+                        <p>不提产品、不提产品名、不做成交</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 9: 写作技巧
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">09</div>
+        <div class="slide-content">
+            <p class="section-label reveal">写作技巧</p>
+            <h2 class="reveal">实用技巧清单</h2>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="reveal">
+                    <h3>配图建议</h3>
+                    <ul class="feature-list">
+                        <li>直播截图</li>
+                        <li>自己照片</li>
+                        <li>学习状态照</li>
+                        <li>聊天截图（打码）</li>
+                        <li>不要全用发的截图</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <h3>格式技巧</h3>
+                    <ul class="feature-list">
+                        <li>开头用 #关键词 自动变蓝</li>
+                        <li>标签表达你的观点</li>
+                        <li>放一条金句</li>
+                        <li>评论区钩子：自己评论自己</li>
+                        <li>不要用英文引号（一眼AI）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 10: 发布时间
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">10</div>
+        <div class="slide-content">
+            <p class="section-label reveal">发布策略</p>
+            <h2 class="reveal">黄金发布时间</h2>
+            <div class="timeline" style="margin-top: var(--content-gap);">
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>上午 7:30 - 8:30</h4>
+                        <p>起床刷手机时间</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>中午 12:00 - 13:00</h4>
+                        <p>午饭时间</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>晚上 19:30 - 22:00</h4>
+                        <p>睡前黄金时间</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 11: 私聊篇 - 核心心态
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">11</div>
+        <div class="slide-content">
+            <p class="section-label reveal">第二章</p>
+            <h2 class="reveal">私聊篇 · 核心心态</h2>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="card reveal">
+                    <h3>松弛</h3>
+                    <p>你的状态要放松，你是在和朋友聊天，不是在完成任务，不是在推销。</p>
+                    <ul class="feature-list" style="margin-top: 0.75rem;">
+                        <li>蓝调：人、物、AI</li>
+                        <li>福利：直播</li>
+                        <li>我真的觉得这个对你有帮助</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <h3>笃定</h3>
+                    <p>不要来者不拒，筛选很重要，不要改变别人。</p>
+                    <h3 style="margin-top: 1rem;">霸道</h3>
+                    <p>下切（提问）= 续命</p>
+                    <p style="font-size: var(--small-size); margin-top: 0.5rem;">用问句结尾，对话就能接下去</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 12: 上推下切
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">12</div>
+        <div class="slide-content">
+            <p class="section-label reveal">私聊技巧</p>
+            <h2 class="reveal">上推下切 · 四步走</h2>
+            <p style="text-align: center; margin-bottom: var(--content-gap);" class="reveal">怎么让对话不聊死</p>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第一步：破冰拉家常</h4>
+                        <p>回复他最近的朋友圈 / 加了好久没怎么聊过，你现在在做什么？目的：让对话自然开始，不要一上来就推销</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第二步：赞美拉近</h4>
+                        <p>"你这也太厉害了吧""羡慕你" —— 真心的赞美能快速拉近距离</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第三步：拉到相关话题</h4>
+                        <p>聊到学习、成长、大学规划、AI，或者从他的朋友圈里找切入点</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>第四步：顺势推荐</h4>
+                        <p>给一个低门槛的行动：发海报/发链接/发福利资料。说完就停，不追问。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 13: 回马枪
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">13</div>
+        <div class="slide-content">
+            <p class="section-label reveal">私聊技巧</p>
+            <h2 class="reveal">回马枪策略</h2>
+            <p style="text-align: center; margin-bottom: var(--content-gap);" class="reveal">没回复的人怎么办？</p>
+            <div class="two-col">
+                <div class="reveal">
+                    <h3>基本操作</h3>
+                    <ul class="feature-list">
+                        <li>隔一天再发："我昨天发你的东西你看到了吗？"</li>
+                        <li>不是催他买/报名，是关心他用了没</li>
+                        <li>每次回马枪都带新的价值内容</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <h3>进阶版</h3>
+                    <div class="highlight-box">
+                        <p>语音回马枪 —— 语音比文字更有亲切感和紧迫感</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: var(--small-size);">事先准备好的内容，记得要模拟人类打字的速度慢慢发出去</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 14: 转化链路
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">14</div>
+        <div class="slide-content">
+            <p class="section-label reveal">转化链路</p>
+            <h2 class="reveal">丝滑转化闭环</h2>
+            <div class="timeline" style="margin-top: var(--content-gap);">
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>朋友圈种草</h4>
+                        <p>让朋友知道你在做一件有价值的事</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>先发资料或福利</h4>
+                        <p>建立信任，先给予不先索取</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>聊体感，制造共鸣</h4>
+                        <p>"你试了没，感觉怎么样？"</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>发海报/发链接</h4>
+                        <p>对方扫码 = 种草成功</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 15: 两条路径
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">15</div>
+        <div class="slide-content">
+            <p class="section-label reveal">转化链路</p>
+            <h2 class="reveal">两条路并行</h2>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="card reveal">
+                    <h3>被动路径</h3>
+                    <p>朋友圈发出去 → 有人来找你 → 私聊承接</p>
+                    <p style="margin-top: 1rem; font-size: var(--small-size);">朋友圈发得好，你私聊时对方可能说"我看到你发的了"</p>
+                </div>
+                <div class="card reveal">
+                    <h3>主动路径</h3>
+                    <p>你主动找标记过的朋友 → 私聊四步走</p>
+                    <p style="margin-top: 1rem; font-size: var(--small-size);">朋友圈不硬推，互相刺激</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 16: 每日节奏
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">16</div>
+        <div class="slide-content">
+            <p class="section-label reveal">执行计划</p>
+            <h2 class="reveal">每日节奏表</h2>
+            <div class="timeline" style="margin-top: var(--content-gap);">
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>上课后</h4>
+                        <p>发一条种草朋友圈（三段式）</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>中午/下午</h4>
+                        <p>私聊 3-5 个朋友（下午为主）</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>晚上</h4>
+                        <p>再发一条朋友圈 + 给没回复的人打回马枪</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>睡前</h4>
+                        <p>写今日复盘</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 17: 三条红线
+         =========================================== -->
+    <section class="slide content-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="slide-number">17</div>
+        <div class="slide-content">
+            <p class="section-label reveal">注意事项</p>
+            <h2 class="reveal">三条红线</h2>
+            <div class="two-col" style="margin-top: var(--content-gap);">
+                <div class="reveal">
+                    <ul class="numbered-list">
+                        <li><strong>不滥用群发</strong> — 个性化沟通更有效</li>
+                        <li><strong>不照抄</strong> — 模板是骨架，你的感受是血肉，一字不改被朋友发现你就完了</li>
+                        <li><strong>不急</strong> — 先挑最熟的三个朋友练手，不要一次性发太多</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <div class="highlight-box">
+                        <p><strong>AI 是工具</strong></p>
+                        <p style="margin-top: 0.5rem;">不会写朋友圈？让 AI 说你的感受 → AI 帮你整理 → 你自己改一遍 → 发</p>
+                        <p style="margin-top: 0.5rem;">最好发出去的每一个字你自己过一遍</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 18: 今日行动
+         =========================================== -->
+    <section class="slide closing-slide">
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="slide-number">18</div>
+        <div class="slide-content">
+            <div class="accent-line reveal"></div>
+            <h2 class="reveal">今日行动清单</h2>
+            <ul class="action-list">
+                <li class="reveal">
+                    <span class="time">上午</span>
+                    <span>写一条种草朋友圈，中午发出去</span>
+                </li>
+                <li class="reveal">
+                    <span class="time">下午</span>
+                    <span>私聊你最熟的三个朋友</span>
+                </li>
+                <li class="reveal">
+                    <span class="time">晚上</span>
+                    <span>再发一条 + 回马枪</span>
+                </li>
+                <li class="reveal">
+                    <span class="time">睡前</span>
+                    <span>提交复盘</span>
+                </li>
+            </ul>
+            <p class="reveal" style="margin-top: 2rem; font-size: var(--small-size); color: var(--accent-gold);">by 冷月的云 · 由 AI 辅助 · 晨布发布</p>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         JAVASCRIPT
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.isScrolling = false;
+                
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupProgressBar();
+                this.setupNavDots();
+                this.setupWheelNav();
+            }
+
+            setupIntersectionObserver() {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            this.currentSlide = Array.from(this.slides).indexOf(entry.target);
+                            this.updateNavDots();
+                            this.updateProgressBar();
+                        }
+                    });
+                }, observerOptions);
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                    
+                    switch(e.key) {
+                        case 'ArrowDown':
+                        case 'ArrowRight':
+                        case ' ':
+                        case 'PageDown':
+                            e.preventDefault();
+                            this.nextSlide();
+                            break;
+                        case 'ArrowUp':
+                        case 'ArrowLeft':
+                        case 'PageUp':
+                            e.preventDefault();
+                            this.prevSlide();
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            this.goToSlide(0);
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            this.goToSlide(this.totalSlides - 1);
+                            break;
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let touchStartY = 0;
+                let touchEndY = 0;
+                const minSwipeDistance = 50;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    const swipeDistance = touchStartY - touchEndY;
+                    
+                    if (Math.abs(swipeDistance) > minSwipeDistance) {
+                        if (swipeDistance > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            setupWheelNav() {
+                let wheelTimeout;
+                
+                document.addEventListener('wheel', (e) => {
+                    if (this.isScrolling) return;
+                    
+                    clearTimeout(wheelTimeout);
+                    wheelTimeout = setTimeout(() => {
+                        this.isScrolling = false;
+                    }, 800);
+                    
+                    this.isScrolling = true;
+                    
+                    if (e.deltaY > 0) {
+                        this.nextSlide();
+                    } else if (e.deltaY < 0) {
+                        this.prevSlide();
+                    }
+                }, { passive: true });
+            }
+
+            setupProgressBar() {
+                this.progressBar = document.getElementById('progressBar');
+                this.updateProgressBar();
+            }
+
+            setupNavDots() {
+                const navDots = document.getElementById('navDots');
+                
+                this.slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'nav-dot';
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    navDots.appendChild(dot);
+                });
+                
+                this.navDots = navDots.querySelectorAll('.nav-dot');
+                this.updateNavDots();
+            }
+
+            updateProgressBar() {
+                if (this.progressBar) {
+                    const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                    this.progressBar.style.width = progress + '%';
+                }
+            }
+
+            updateNavDots() {
+                if (this.navDots) {
+                    this.navDots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === this.currentSlide);
+                    });
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(index) {
+                if (index >= 0 && index < this.totalSlides) {
+                    this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+
+        // Initialize presentation when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+        } else {
+            new SlidePresentation();
+        }
+    </script>
+</body>
+</html>
